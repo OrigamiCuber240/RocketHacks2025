@@ -8,7 +8,7 @@ import java.net.*;
 public class ClientSocket {
 
 	private Socket s = null;
-	private DataOutputStream out = null;
+	private static DataOutputStream out = null;
 	
 	public ClientSocket() {
 		
@@ -25,7 +25,7 @@ public class ClientSocket {
 			System.out.println(i.getCause());
 			return;
 		}
-		System.out.println("After");
+		
 		ClientGUI client = new ClientGUI();
 		client.createGUI();
 		
@@ -40,6 +40,7 @@ public class ClientSocket {
 					out.writeUTF(client.worker);
 					out.writeUTF(client.description);
 					out.writeUTF(client.location);
+					out.flush();
 				}
 				catch (IOException i) {
 					System.out.println(i.getMessage());
@@ -60,5 +61,15 @@ public class ClientSocket {
 	
 	public static void main(String[] args) {
 		ClientSocket c = new ClientSocket();
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				try {
+					out.writeUTF("over");
+				}
+				catch (IOException i) {
+				}
+			}
+		});
 	}
 }
