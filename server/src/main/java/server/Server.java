@@ -13,6 +13,8 @@ public class Server {
 			serverSocket.setReuseAddress(true); //Allow multiple connections at same port
 
 			while (true) {
+				System.out.println("awaiting client");
+
 				Socket socket = serverSocket.accept();
 
 				System.out.println("New client connected" + socket.getInetAddress().getHostAddress());
