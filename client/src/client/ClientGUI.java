@@ -9,10 +9,16 @@ public class ClientGUI {
 	String worker;
 	String description;
 	String location;
+	JButton submit;
+	JComboBox workerBox;
+	JTextField descriptionBox;
+	JTextField locationBox;
+	JFrame frame;
+	
 
 	public void createGUI() {
 		// GUI window
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(400,280);
 		frame.setLocationRelativeTo(null);
@@ -21,7 +27,7 @@ public class ClientGUI {
 		
 		// Worker dropdown menu
 		String workers[] = {"Select a worker...", "Doctor", "Nurse", "Janitor"};
-		JComboBox workerBox = new JComboBox(workers);
+		workerBox = new JComboBox(workers);
 		panel.add(workerBox);
 		workerBox.setBounds(15, 10, 150, 25);
 		
@@ -47,23 +53,15 @@ public class ClientGUI {
 		locationPrompt.setBorder(BorderFactory.createEmptyBorder());
 		locationPrompt.setBounds(15, 150, 300, 15);
 		
-		JTextField locationBox = new JTextField();
+		locationBox = new JTextField();
 		panel.add(locationBox);
 		locationBox.setBounds(15, 170, 300, 20);
 		
 		// Submit button
-		JButton submit = new JButton("Submit");
+		submit = new JButton("Submit");
 		panel.add(submit);
 		submit.setBounds(15, 200, 100, 20);
-		submit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				worker = (String) workerBox.getSelectedItem();
-				description = descriptionBox.getText();
-				location = locationBox.getText();
-				frame.setVisible(false);
-			}
-		});
-		
+				
 		frame.add(panel);
 		frame.setVisible(true);
 		
