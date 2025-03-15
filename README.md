@@ -1,7 +1,10 @@
 ### IDEAS
 
-investment news software
+dyschedule
+dynamic scheduling software for hospitals
 
 ### GOALS
 
-complete the hackathon
+database holding client and worker info
+hosted on aws server
+mobile apps for clients and workers
