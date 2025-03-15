@@ -69,6 +69,7 @@ class ClientHandler implements Runnable {
 					// close the connection
 					socket.close();
 					in.close();
+					return;
 				}
 			}
 			System.out.println("Closing connection");
@@ -76,9 +77,13 @@ class ClientHandler implements Runnable {
 			// close connection
 			socket.close();
 			in.close();
+
+			return;
 		}
 		catch (IOException i) {
 			System.out.println(i);
+
+			return;
 		}
 	}
 
