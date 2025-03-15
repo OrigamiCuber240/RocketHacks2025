@@ -1,7 +1,8 @@
 ### IDEAS
 
-investment news software
+Budgeting/Investment using data set for proected growth
+**Dynamic Scheduling for medical labs/clinics/hospitals
 
 ### GOALS
 
-complete the hackathon
+Complete the hackathon

@@ -1,21 +1,24 @@
 CREATE DATABASE DySchu;
 
 CREATE TABLE client(
-	clientNum INT PRIMARY KEY,
-	clientFirstName CHAR,
-	clientSirName CHAR,
+	clientNum INT unsigned NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (clientNum),
+	clientFirstName VARCHAR(16) NOT NULL,
+	clientSirName VARCHAR(16) NOT NULL
 );
 
 CREATE TABLE employee(
-	employeeNum INT PRIMARY KEY,
-	employeeFirstName CHAR,
-	employeeName CHAR
+	employeeNum INT unsigned NOT NULL AUTO_INCREMENT,
+	employeeFirstName VARCHAR(16) NOT NULL,
+	employeeName VARCHAR(16) NOT NULL,
+	jobTitle VARCHAR(16) NOT NULL,
+	PRIMARY KEY (employeeNum)
 );
 
 CREATE TABLE clientEmployee(
-	employeeNum INT,
-	clientNum INT,
-	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum)
-	FOREIGN KEY (clientNum) REFERENCES employee (clientNum)
-	clientEmployeeNum INT PRIMARY KEY
+	employeeNum INT NOT NULL,
+	clientNum INT NOT NULL,
+	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum) ON UPDATE,
+	FOREIGN KEY (clientNum) REFERENCES client (clientNum) ON UPDATE,
+	PRIMARY KEY (clientNum, employeeNum)
 ); 
