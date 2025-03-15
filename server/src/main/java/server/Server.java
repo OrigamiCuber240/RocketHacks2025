@@ -27,6 +27,7 @@ public class Server {
 		}
 		catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
 		finally {
 		}
@@ -63,11 +64,16 @@ class ClientHandler implements Runnable {
 				}
 				catch(IOException i) {
 					System.out.println(i);
+					System.out.println("Closing connection");
+
+					// close the connection
+					socket.close();
+					in.close();
 				}
 			}
 			System.out.println("Closing connection");
 
-			// Close connection
+			// close connection
 			socket.close();
 			in.close();
 		}
