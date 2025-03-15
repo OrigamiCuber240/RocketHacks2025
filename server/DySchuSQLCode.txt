@@ -11,13 +11,11 @@ CREATE TABLE employee(
 	employeeNum INT unsigned NOT NULL AUTO_INCREMENT,
 	employeeFirstName VARCHAR(16) NOT NULL,
 	employeeName VARCHAR(16) NOT NULL,
-	jobTitle VARCHAR(16) NOT NULL,
+	jobTitle INT unsigned NOT NULL,
 	PRIMARY KEY (employeeNum)
 );
 
 CREATE TABLE clientEmployee(
-	employeeNum INT NOT NULL,
-	clientNum INT NOT NULL,
 	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum) ON UPDATE,
 	FOREIGN KEY (clientNum) REFERENCES client (clientNum) ON UPDATE,
 	PRIMARY KEY (clientNum, employeeNum)
