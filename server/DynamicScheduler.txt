@@ -1,0 +1,2 @@
+This tool will be used as a instant promt monitoring software which will
+insert requests into an employee schedule depending on job type and urgency 
