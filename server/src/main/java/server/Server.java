@@ -4,23 +4,50 @@ import java.net.*;
 import java.io.*;
 
 public class Server {
-	private Socket socket;
+	//private Socket socket;
 	private ServerSocket serverSocket;
-	private DataInputStream in;
 
 	public Server(int port) {
 		try {
-			serverSocket = new ServerSocket(port);
-			System.out.println("Server started");
+			serverSocket = new ServerSocket(port); //Connect at port
+			serverSocket.setReuseAddress(true); //Allow multiple connections at same port
 
-			System.out.println("Waiting for a client ...");
+			while (true) {
+				Socket socket = serverSocket.accept();
 
-			socket = serverSocket.accept();
-			System.out.println("Client accepted");
+				System.out.println("New client connected" + socket.getInetAddress().getHostAddress());
 
+				// creates a new thread for client
+				ClientHandler clientSocket = new ClientHandler(socket);
+
+				new Thread(clientSocket).start();
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+		}
+	}
+}
+
+class ClientHandler implements Runnable {
+	private final Socket socket;
+
+	private DataInputStream in;
+	private DataOutputStream out;
+
+	public ClientHandler(Socket socket) {
+		this.socket = socket; //set socket
+	}
+
+	public void run() {
+		try {
 			// Takes input from the client socket
-			in = new DataInputStream(
-				new BufferedInputStream(socket.getInputStream()));
+			in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+
+			// Outputs to client socket
+			out = new DataOutputStream( new BufferedOutputStream(socket.getOutputStream()));
 
 			String message = "";
 
