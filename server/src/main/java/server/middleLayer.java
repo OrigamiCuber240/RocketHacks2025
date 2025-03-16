@@ -16,7 +16,7 @@ public class middleLayer {
 
     public middleLayer() throws ClassNotFoundException, SQLException{
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj,jdbc.Driver");
             this.con = DriverManager.getConnection(url, username, password);
             this.stmt = con.createStatement();
         } catch (Exception e){
