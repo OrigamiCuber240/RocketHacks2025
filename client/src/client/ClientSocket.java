@@ -8,7 +8,7 @@ import java.net.*;
 public class ClientSocket {
 
 	private Socket s = null;
-	private static DataOutputStream out = null;
+	public static DataOutputStream out = null;
 	
 	public ClientSocket() {
 		
@@ -37,9 +37,8 @@ public class ClientSocket {
 				client.frame.setVisible(false);
 		
 				try {
-					out.writeUTF(client.worker);
-					out.writeUTF(client.description);
-					out.writeUTF(client.location);
+					out.writeUTF("send-employee" + "|" + client.worker + "|" + client.description);
+					// out.writeUTF(client.location);
 					out.flush();
 				}
 				catch (IOException i) {
@@ -59,17 +58,5 @@ public class ClientSocket {
 		
 	}
 	
-	public static void main(String[] args) {
-		ClientSocket c = new ClientSocket();
-		
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			public void run() {
-				try {
-					out.writeUTF("over");
-				}
-				catch (IOException i) {
-				}
-			}
-		});
-	}
+	
 }
