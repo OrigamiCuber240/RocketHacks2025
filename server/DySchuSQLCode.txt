@@ -2,12 +2,12 @@ CREATE DATABASE DySchu;
 
 CREATE TABLE client(
 	clientNum INT unsigned NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY (clientNum),
 	clientFirstName VARCHAR(16) NOT NULL,
-	clientSirName VARCHAR(16) NOT NULL
+	clientSirName VARCHAR(16) NOT NULL,
+	PRIMARY KEY (clientNum)
 );
 
-CREATE TABLE employee(
+CREATE TABLE employee(		
 	employeeNum INT unsigned NOT NULL AUTO_INCREMENT,
 	employeeFirstName VARCHAR(16) NOT NULL,
 	employeeName VARCHAR(16) NOT NULL,
@@ -15,8 +15,10 @@ CREATE TABLE employee(
 	PRIMARY KEY (employeeNum)
 );
 
-CREATE TABLE clientEmployee(
-	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum) ON UPDATE,
-	FOREIGN KEY (clientNum) REFERENCES client (clientNum) ON UPDATE,
+CREATE TABLE clientEmployee(	
+	clientNum INT unsigned NOT NULL,
+	employeeNum INT unsigned NOT NULL,
+	FOREIGN KEY (clientNum) REFERENCES client (clientNum) ON UPDATE CASCADE,
+	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum) ON UPDATE CASCADE,
 	PRIMARY KEY (clientNum, employeeNum)
-); 
+);
