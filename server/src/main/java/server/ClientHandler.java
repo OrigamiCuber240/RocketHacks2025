@@ -3,6 +3,7 @@ package server;
 import java.util.Set;
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 
 enum Jobs {
 	DOCTOR,
@@ -58,8 +59,8 @@ public class ClientHandler implements Runnable {
 	}
 
 	Boolean isPasswordCorrect(int id, String passwd) {
-		String raw = parent.mid.read(id, "employee");
-		String[] arr = raw.split("[|]");
+		String pass = parent.mid.readPassword(String.format("%d", id));
+		return (passwd == pass);
 	}
 
 	Boolean isEmployeeInDatabase(int id) {
@@ -108,7 +109,7 @@ public class ClientHandler implements Runnable {
 			var raw = parent.mid.read(String.format("%d", keys[i]), "employee");
 			String[] params = raw.split("|");
 			if (destringTitle(params[3]) == role) {
-				sendRequest(keys[i]);
+				parent.undefinedHandlers.get(parent.employeeHandlers.get(keys[i])).sendRequest(first, sir);
 			}
 
 		}
@@ -171,7 +172,7 @@ public class ClientHandler implements Runnable {
 	void startLogin(int id) {
 		writeBooleanOut(isEmployeeInDatabase(id));
 		String passwd = readString();
-		Boolean isEmployee = isPasswordCorrect();
+		isEmployee = isPasswordCorrect(id, passwd);
 		writeBooleanOut(isEmployee);
 		if (isEmployee) {
 			parent.employeeHandlers.put(id, this.id);
@@ -180,7 +181,13 @@ public class ClientHandler implements Runnable {
 	}
 
 	void signup(String first, String sir, int job, String password) {
-
+		String[] args = {first, sir, String.format("%d", job), password};
+		try {
+			parent.mid.write(args, "employee");
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	void parseInput(String message) {
