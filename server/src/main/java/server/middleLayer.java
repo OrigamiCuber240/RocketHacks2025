@@ -66,7 +66,7 @@ public class middleLayer {
         }
         return "No data found";
     }
-    public void change(String table, String targetColumn, String newData, String identifer){
+    public void change(String table, String targetColumn, String newData, String identifier){
 	String sql = "UPDATE " + table + " SET " + targetColumn + " = ? WHERE identifier_column = "+identifier;
         try (Connection con = DriverManager.getConnection(url, username, password)){
 	    PreparedStatement pstmt = con.prepareStatement(sql);{
@@ -74,6 +74,8 @@ public class middleLayer {
         	pstmt.setString(2, identifier);
         	pstmt.executeUpdate();
 	    }
+	} catch (SQLException e) {
+		System.out.println(e.getMessage());
 	}
     }
 }
