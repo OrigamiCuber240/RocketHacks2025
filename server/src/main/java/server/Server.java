@@ -59,9 +59,9 @@ public class Server {
 		System.out.println("New client connected" + socket.getInetAddress().getHostAddress());
 
 		// creates a new thread for client
-		ClientHandler clientSocket = new ClientHandler(socket);
-
 		int currentId = getLowestUnassignedIndex();
+		ClientHandler clientSocket = new ClientHandler(socket, currentId);
+
 		undefinedHandlers.put(currentId, clientSocket);
 
 		new Thread(undefinedHandlers.get(currentId)).start();
