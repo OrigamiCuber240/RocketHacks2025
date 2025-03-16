@@ -66,6 +66,21 @@ public class middleLayer {
         }
         return "No data found";
     }
+    public String readPassword(String employeeNum){
+        String sql = "Select employeePassword FROM employee";
+	try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1,employeeNum);
+	    try (ResultSet rs =pstmt.executeQuery()){
+		if (rs.next()){
+			return rs.getString("employeePassword");
+		}
+	    }
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return "No data found";
+    }
+
     public void change(String table, String targetColumn, String newData, String identifier){
 	String sql = "UPDATE " + table + " SET " + targetColumn + " = ? WHERE identifier_column = "+identifier;
         try (Connection con = DriverManager.getConnection(url, username, password)){
