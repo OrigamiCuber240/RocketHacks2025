@@ -5,23 +5,15 @@ import java.io.*;
 import java.net.*;
 import java.sql.SQLException;
 
-enum Jobs {
-	DOCTOR,
-	NURSE,
-	JANITOR,
-	FOORMANEGER,
-	EMERGENCY
-}
-
-enum Jobs {
-	DOCTOR,
-	NURSE,
-	JANITOR,
-	FOORMANEGER,
-	EMERGENCY
-}
 
 public class ClientHandler implements Runnable {
+	static enum Jobs {
+		DOCTOR,
+		NURSE,
+		JANITOR,
+		FOORMANEGER,
+		EMERGENCY
+	}
 	private final Socket socket;
 
 	private DataInputStream in;
