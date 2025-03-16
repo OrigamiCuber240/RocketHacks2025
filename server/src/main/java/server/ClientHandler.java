@@ -13,6 +13,14 @@ enum Jobs {
 	EMERGENCY
 }
 
+enum Jobs {
+	DOCTOR,
+	NURSE,
+	JANITOR,
+	FOORMANEGER,
+	EMERGENCY
+}
+
 public class ClientHandler implements Runnable {
 	private final Socket socket;
 
