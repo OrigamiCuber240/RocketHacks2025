@@ -11,7 +11,7 @@ public class EmployeeGUI {
 	JTextField pwBox;
 	JTextField firstNameBox;
 	JTextField lastNameBox;
-	JComboBox jobsBox;
+	JComboBox<String> jobsBox;
 	JButton logIn;
 	JButton createAccount;
 	JButton enterID;
@@ -153,7 +153,7 @@ public class EmployeeGUI {
 		
 		// Worker dropdown menu
 		String jobs[] = {"Select job title...", "Doctor", "Nurse", "Janitor", "Floormanager", "Emergency Services"};
-		jobsBox = new JComboBox(jobs);
+		jobsBox = new JComboBox<>(jobs);
 		panel.add(jobsBox);
 		jobsBox.setBounds(15, 93, 150, 25);
 		

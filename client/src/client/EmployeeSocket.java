@@ -11,21 +11,52 @@ public class EmployeeSocket {
 	private Socket s = null;
 	private static DataInputStream in = null;
 	public static DataOutputStream out = null;
+	private final String SERVER_IP = "35.166.150.249";
+	private final int SERVER_PORT = 5000;
+	private final int MAX_RETRIES = 3;
 	
 	public EmployeeSocket() {
+		int retries = 0;
+		boolean connected = false;
 		
-		try {
-			s = new Socket("35.166.150.249", 5000);
-			in = new DataInputStream(s.getInputStream());
-			out = new DataOutputStream(s.getOutputStream());
+		while (!connected && retries < MAX_RETRIES) {
+			try {
+				System.out.println("Attempting to connect to server at " + SERVER_IP + ":" + SERVER_PORT + " (Attempt " + (retries + 1) + ")");
+				s = new Socket(SERVER_IP, SERVER_PORT);
+				in = new DataInputStream(s.getInputStream());
+				out = new DataOutputStream(s.getOutputStream());
+				connected = true;
+				System.out.println("Connected to server successfully");
+			}
+			catch (UnknownHostException u) {
+				System.out.println("Error: Unknown host - " + u.getMessage());
+				retries++;
+				if (retries < MAX_RETRIES) {
+					System.out.println("Retrying in 2 seconds...");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException ie) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
+			catch (IOException i) {
+				System.out.println("Error: Connection failed - " + i.getMessage());
+				System.out.println("Cause: " + i.getCause());
+				retries++;
+				if (retries < MAX_RETRIES) {
+					System.out.println("Retrying in 2 seconds...");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException ie) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
 		}
-		catch (UnknownHostException u) {
-			System.out.println(u.getMessage());
-			return;
-		}
-		catch (IOException i) {
-			System.out.println(i.getMessage());
-			System.out.println(i.getCause());
+		
+		if (!connected) {
+			System.out.println("Failed to connect to server after " + MAX_RETRIES + " attempts");
 			return;
 		}
 		
@@ -72,7 +103,7 @@ public class EmployeeSocket {
 										}
 										
 										try {
-											boolean valid = in.readBoolean();
+											in.readBoolean(); // Read but don't store the value
 										}
 										catch(IOException i) {
 											System.out.println(i.getMessage());
@@ -117,7 +148,7 @@ public class EmployeeSocket {
 												}
 												
 												try {
-													boolean valid = in.readBoolean();
+													in.readBoolean(); // Read but don't store the value
 												}
 												catch(IOException i) {
 													System.out.println(i.getMessage());

@@ -10,7 +10,7 @@ public class ClientMain {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				try {
-					c.out.writeUTF("over");
+					ClientSocket.out.writeUTF("over");
 				}
 				catch (IOException i) {
 				}

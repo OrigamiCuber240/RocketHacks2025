@@ -10,7 +10,7 @@ public class EmployeeMain {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				try {
-					e.out.writeUTF("over");
+					EmployeeSocket.out.writeUTF("over");
 				}
 				catch (IOException i) {
 				}

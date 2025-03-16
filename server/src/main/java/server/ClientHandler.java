@@ -11,13 +11,14 @@ public class ClientHandler implements Runnable {
 		DOCTOR,
 		NURSE,
 		JANITOR,
-		FOORMANEGER,
+		FLOOR_MANAGER,
 		EMERGENCY
 	}
 	private final Socket socket;
 
 	private DataInputStream in;
 	private DataOutputStream out;
+	private boolean running = true;
 
 	public Boolean isEmployee;
 	public int id;
@@ -35,29 +36,38 @@ public class ClientHandler implements Runnable {
 			in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
 			// Outputs to client socket
-			out = new DataOutputStream( new BufferedOutputStream(socket.getOutputStream()));
+			out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 
 			String message = "";
 
 			// Reads message from client until "Over" is sent
-			while (!message.equals("over")) {
-
-				message = in.readUTF();
-
-				System.out.println(message);
-				parseInput(message);
+			while (running && !message.equals("over")) {
+				try {
+					message = in.readUTF();
+					System.out.println("Received message from client " + id + ": " + message);
+					parseInput(message);
+				} catch (EOFException e) {
+					System.out.println("Client " + id + " disconnected");
+					break;
+				} catch (SocketException e) {
+					System.out.println("Connection with client " + id + " lost: " + e.getMessage());
+					break;
+				} catch (IOException e) {
+					System.out.println("Error reading from client " + id + ": " + e.getMessage());
+					break;
+				}
 			}
-			System.out.println("Closing connection");
-
+			System.out.println("Closing connection with client " + id);
+		} catch (IOException e) {
+			System.out.println("Error setting up streams for client " + id + ": " + e.getMessage());
+		} finally {
 			closeConnection();
-
-			return;
 		}
-		catch (IOException i) {
-			System.out.println(i.getMessage());
-
-			return;
-		}
+	}
+	
+	public void stop() {
+		running = false;
+		closeConnection();
 	}
 
 	Boolean isPasswordCorrect(int id, String passwd) {
@@ -220,26 +230,60 @@ public class ClientHandler implements Runnable {
 	}
 
 	void closeConnection() {
-		if (isEmployee == null) {
-			parent.undefinedHandlers.remove(id);
-		} 
-		else if (isEmployee == true) {
-			parent.undefinedHandlers.remove(parent.employeeHandlers.get(id));
-			parent.employeeHandlers.remove(id);
-		}
-		else {
-			parent.undefinedHandlers.remove(parent.patientHandlers.get(id));
-			parent.patientHandlers.remove(id);
-		}
-
 		try {
-			socket.close();
-			in.close();
-			out.close();
-		}
-		catch (IOException i) {
-			System.out.println(i);
-			return;
+			if (isEmployee == null) {
+				if (parent.undefinedHandlers.containsKey(id)) {
+					parent.undefinedHandlers.remove(id);
+					System.out.println("Removed undefined client " + id + " from handlers");
+				}
+			} 
+			else if (isEmployee == true) {
+				if (parent.employeeHandlers.containsKey(id)) {
+					int handlerId = parent.employeeHandlers.get(id);
+					if (parent.undefinedHandlers.containsKey(handlerId)) {
+						parent.undefinedHandlers.remove(handlerId);
+					}
+					parent.employeeHandlers.remove(id);
+					System.out.println("Removed employee client " + id + " from handlers");
+				}
+			}
+			else {
+				if (parent.patientHandlers.containsKey(id)) {
+					int handlerId = parent.patientHandlers.get(id);
+					if (parent.undefinedHandlers.containsKey(handlerId)) {
+						parent.undefinedHandlers.remove(handlerId);
+					}
+					parent.patientHandlers.remove(id);
+					System.out.println("Removed patient client " + id + " from handlers");
+				}
+			}
+			
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					System.out.println("Error closing input stream: " + e.getMessage());
+				}
+			}
+			
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					System.out.println("Error closing output stream: " + e.getMessage());
+				}
+			}
+			
+			if (socket != null && !socket.isClosed()) {
+				try {
+					socket.close();
+					System.out.println("Socket for client " + id + " closed");
+				} catch (IOException e) {
+					System.out.println("Error closing socket: " + e.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Error during connection cleanup: " + e.getMessage());
 		}
 	}
 }

@@ -9,8 +9,8 @@ public class ClientGUI {
 	JFrame frame;
 	JTextField firstNameBox;
 	JTextField lastNameBox;
-	JComboBox workerBox;
-	JTextField descriptionBox;
+	JComboBox<String> workerBox;
+	JTextArea descriptionBox;
 	JButton submit;
 	
 	
@@ -48,7 +48,7 @@ public class ClientGUI {
 		
 		// Worker dropdown menu
 		String workers[] = {"Select a worker...", "Doctor", "Nurse", "Janitor", "Floormanager", "Emergency Services"};
-		workerBox = new JComboBox(workers);
+		workerBox = new JComboBox<>(workers);
 		panel.add(workerBox);
 		workerBox.setBounds(15, 70, 150, 25);
 		
@@ -60,7 +60,7 @@ public class ClientGUI {
 		descriptionPrompt.setBorder(BorderFactory.createEmptyBorder());
 		descriptionPrompt.setBounds(15, 105, 300, 15);
 		
-		JTextArea descriptionBox = new JTextArea();
+		descriptionBox = new JTextArea();
 		descriptionBox.setLineWrap(true);
 		JScrollPane scrollPane = new JScrollPane(descriptionBox);
 		panel.add(scrollPane);
