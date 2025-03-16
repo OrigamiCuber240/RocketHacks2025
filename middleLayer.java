@@ -5,6 +5,10 @@ public class middleLayer {
     private Connection con;
     private Statement stmt;
 
+    String url = "jdbc:mysql://localhost:3306/dyschu";
+    String username = "root";
+    String password = "PiE85397";
+
     public middleLayer(String url, String username, String password) throws ClassNotFoundException, SQLException{
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
