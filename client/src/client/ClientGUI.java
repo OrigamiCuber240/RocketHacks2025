@@ -14,7 +14,6 @@ public class ClientGUI {
 	JTextField descriptionBox;
 	JTextField locationBox;
 	JFrame frame;
-	
 
 	public void createGUI() {
 		// GUI window

@@ -26,32 +26,47 @@ public class ClientSocket {
 			return;
 		}
 		
-		ClientGUI client = new ClientGUI();
-		client.createGUI();
-		
-		client.submit.addActionListener(new ActionListener() {
+		IdGUI idgui = new IdGUI();
+		idgui.idGUI();
+		idgui.enter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				client.worker = (String) client.workerBox.getSelectedItem();
-				client.description = client.descriptionBox.getText();
-				client.location = client.locationBox.getText();
-				client.frame.setVisible(false);
-		
+				idgui.frameID.setVisible(false);
 				try {
-					out.writeUTF("send-employee" + "|" + client.worker + "|" + client.description);
-					// out.writeUTF(client.location);
+					out.writeUTF("initialize|false|" + idgui.idBox.getText());
 					out.flush();
 				}
-				catch (IOException i) {
+				catch(IOException i) {
 					System.out.println(i.getMessage());
 				}
+		
+				ClientGUI client = new ClientGUI();
+				client.createGUI();
 				
-				try {
-					out.close();
-					s.close();
-				}
-				catch (IOException i) {
-					System.out.println(i.getMessage());
-				}
+				client.submit.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						client.worker = (String) client.workerBox.getSelectedItem();
+						client.description = client.descriptionBox.getText();
+						client.location = client.locationBox.getText();
+						client.frame.setVisible(false);
+				
+						try {
+							out.writeUTF("send-employee" + "|" + client.worker + "|" + client.description);
+							// out.writeUTF(client.location);
+							out.flush();
+						}
+						catch (IOException i) {
+							System.out.println(i.getMessage());
+						}
+						
+						try {
+							out.close();
+							s.close();
+						}
+						catch (IOException i) {
+							System.out.println(i.getMessage());
+						}
+					}
+				});
 			}
 		});
 		
