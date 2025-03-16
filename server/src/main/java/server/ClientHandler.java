@@ -4,6 +4,14 @@ import java.util.Set;
 import java.io.*;
 import java.net.*;
 
+enum Jobs {
+	DOCTOR,
+	NURSE,
+	JANITOR,
+	FOORMANEGER,
+	EMERGENCY
+}
+
 public class ClientHandler implements Runnable {
 	private final Socket socket;
 
@@ -49,10 +57,60 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
+	Boolean isPasswordCorrect(int id, String passwd) {
+		String raw = parent.mid.read(id, "employee");
+		String[] arr = raw.split("[|]");
+	}
+
+	Boolean isEmployeeInDatabase(int id) {
+		String raw = parent.mid.read(String.format("%d", id), "employee");
+		String[] arr = raw.split("[|]");
+
+		if (arr[3].length() > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	int destringTitle(String str) {
+		int out;
+
+		switch (str) {
+			case "Doctor":
+			out = 0;
+			break;
+			case "Nurse":
+			out = 1;
+			break;
+			case "Janitor":
+			out = 2;
+			break;
+			case "Floor Manager":
+			out = 3;
+			break;
+			case "Emergency Services":
+			out = 4;
+			break;
+			default:
+			out = 5;
+			break;
+		}
+
+		return out;
+	}
+
 	void initialize(String first, String sir, int role) {
 		Set<Integer> keyset = parent.employeeHandlers.keySet();
 		Integer[] keys = keyset.toArray(new Integer[keyset.size()]);
 		for (int i = 0; i < keys.length; ++i) {
+			var raw = parent.mid.read(String.format("%d", keys[i]), "employee");
+			String[] params = raw.split("|");
+			if (destringTitle(params[3]) == role) {
+				sendRequest(keys[i]);
+			}
+
 		}
 	}
 
@@ -84,82 +142,95 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
-	void writeBooleanOut(String output) {
+	void writeBooleanOut(Boolean output) {
 		try {
-			out.writeUTF(output);
+			out.writeBoolean(output);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 			closeConnection();
 		}
+	}
 
-		Boolean send_request(String first, String sir) {
-			writeOut("request|" + first + "|" + sir);
+	Boolean sendRequest(String first, String sir) {
+		writeOut("request|" + first + "|" + sir);
 
-			Boolean accepted;
+		Boolean accepted;
 
-			try {
-				accepted = in.readBoolean();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-				accepted = false;
-			}
-
-			return accepted;
+		try {
+			accepted = in.readBoolean();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			accepted = false;
 		}
 
-		void startLogin(int id) {
-			writeBooleanOut(database.has(id));
-			readString();
-			writeBooleanOut(isPasswordCorrect);
-		}
+		return accepted;
+	}
 
-		void parseInput(String message) {
-			String[] args = message.split("[|]");
-			System.out.println("Input: " + message);
-
-			for (int i = 0; i < args.length; ++i) {
-				System.out.println(i + ": " + args[i]);
-			}
-
-			switch (args[0]) {
-				//case "accept":
-				//	accept(Boolean.parseBoolean(args[1]));
-				//	break;
-				case "login":
-				startLogin(Integer.parseInt(args[1]));
-				break;
-				case "initialize":
-				initialize(args[1], args[2], Integer.parseInt(args[3]));
-				break;
-				default:
-				System.out.println("command not found" + args[0]);
-				break;
-			}
-		}
-
-		void closeConnection() {
-			if (isEmployee == null) {
-				parent.undefinedHandlers.remove(id);
-			} 
-			else if (isEmployee == true) {
-				parent.undefinedHandlers.remove(parent.employeeHandlers.get(id));
-				parent.employeeHandlers.remove(id);
-			}
-			else {
-				parent.undefinedHandlers.remove(parent.patientHandlers.get(id));
-				parent.patientHandlers.remove(id);
-			}
-
-			try {
-				socket.close();
-				in.close();
-				out.close();
-			}
-			catch (IOException i) {
-				System.out.println(i);
-				return;
-			}
+	void startLogin(int id) {
+		writeBooleanOut(isEmployeeInDatabase(id));
+		String passwd = readString();
+		Boolean isEmployee = isPasswordCorrect();
+		writeBooleanOut(isEmployee);
+		if (isEmployee) {
+			parent.employeeHandlers.put(id, this.id);
+			this.id = id;
 		}
 	}
+
+	void signup(String first, String sir, int job, String password) {
+
+	}
+
+	void parseInput(String message) {
+		String[] args = message.split("[|]");
+		System.out.println("Input: " + message);
+
+		for (int i = 0; i < args.length; ++i) {
+			System.out.println(i + ": " + args[i]);
+		}
+
+		switch (args[0]) {
+			//case "accept":
+			//	accept(Boolean.parseBoolean(args[1]));
+			//	break;
+			case "login":
+			startLogin(Integer.parseInt(args[1]));
+			break;
+			case "signup":
+			signup(args[1], args[2], Integer.parseInt(args[3]), args[4]);
+			break;
+			case "initialize":
+			initialize(args[1], args[2], Integer.parseInt(args[3]));
+			break;
+			default:
+			System.out.println("command not found" + args[0]);
+			break;
+		}
+	}
+
+	void closeConnection() {
+		if (isEmployee == null) {
+			parent.undefinedHandlers.remove(id);
+		} 
+		else if (isEmployee == true) {
+			parent.undefinedHandlers.remove(parent.employeeHandlers.get(id));
+			parent.employeeHandlers.remove(id);
+		}
+		else {
+			parent.undefinedHandlers.remove(parent.patientHandlers.get(id));
+			parent.patientHandlers.remove(id);
+		}
+
+		try {
+			socket.close();
+			in.close();
+			out.close();
+		}
+		catch (IOException i) {
+			System.out.println(i);
+			return;
+		}
+	}
+}
