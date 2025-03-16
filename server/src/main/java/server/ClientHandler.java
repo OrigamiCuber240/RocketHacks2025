@@ -89,7 +89,7 @@ public class ClientHandler implements Runnable {
 	}
 
 	void parseInput(String message) {
-		String[] args = message.split("|");
+		String[] args = message.split("[|]");
 		System.out.println("Input: " + message);
 
 		for (int i = 0; i < args.length; ++i) {
