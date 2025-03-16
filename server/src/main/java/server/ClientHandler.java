@@ -32,21 +32,9 @@ public class ClientHandler implements Runnable {
 
 			// Reads message from client until "Over" is sent
 			while (!message.equals("over")) {
-				try {
-					message = in.readUTF();
-					System.out.println(message);
 
-					parseInput(message);
-				}
-				catch(IOException i) {
-					// print diagnostic message
-					System.out.println("Error: Closing connection");
-					System.out.println(i);
-
-					closeConnection();
-
-					return;
-				}
+				System.out.println(message);
+				parseInput(message);
 			}
 			System.out.println("Closing connection");
 
@@ -68,72 +56,110 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
+	String readString() {
+		String message = "";
+		try {
+			message = in.readUTF();
+			System.out.println(message);
+			return message;
+		}
+		catch(IOException i) {
+			// print diagnostic message
+			System.out.println("Error: Closing connection");
+			System.out.println(i);
+
+			closeConnection();
+
+			return null;
+		}
+	}
+
 	void writeOut(String output) {
 		try {
 			out.writeUTF(output);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
+			closeConnection();
 		}
 	}
 
-	Boolean send_request(String first, String sir) {
-		writeOut("request|" + first + "|" + sir);
-
-		Boolean accepted;
-
+	void writeBooleanOut(String output) {
 		try {
-			accepted = in.readBoolean();
+			out.writeUTF(output);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			accepted = false;
+			closeConnection();
 		}
 
-		return accepted;
-	}
+		Boolean send_request(String first, String sir) {
+			writeOut("request|" + first + "|" + sir);
 
-	void startLogin(int id) {
-		
-	}
+			Boolean accepted;
 
-	void parseInput(String message) {
-		String[] args = message.split("[|]");
-		System.out.println("Input: " + message);
+			try {
+				accepted = in.readBoolean();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				accepted = false;
+			}
 
-		for (int i = 0; i < args.length; ++i) {
-			System.out.println(i + ": " + args[i]);
+			return accepted;
 		}
 
-		switch (args[0]) {
-			//case "accept":
-			//	accept(Boolean.parseBoolean(args[1]));
-			//	break;
-			case "login":
+		void startLogin(int id) {
+			writeBooleanOut(database.has(id));
+			readString();
+			writeBooleanOut(isPasswordCorrect);
+		}
+
+		void parseInput(String message) {
+			String[] args = message.split("[|]");
+			System.out.println("Input: " + message);
+
+			for (int i = 0; i < args.length; ++i) {
+				System.out.println(i + ": " + args[i]);
+			}
+
+			switch (args[0]) {
+				//case "accept":
+				//	accept(Boolean.parseBoolean(args[1]));
+				//	break;
+				case "login":
 				startLogin(Integer.parseInt(args[1]));
 				break;
-			case "initialize":
+				case "initialize":
 				initialize(args[1], args[2], Integer.parseInt(args[3]));
 				break;
-			default:
+				default:
 				System.out.println("command not found" + args[0]);
 				break;
-		}
-	}
-
-	void closeConnection() {
-		if (isEmployee == null) {
-			parent.undefinedHandlers.remove(id);
+			}
 		}
 
-		try {
-			socket.close();
-			in.close();
-			out.close();
-		}
-		catch (IOException i) {
-			System.out.println(i);
-			return;
+		void closeConnection() {
+			if (isEmployee == null) {
+				parent.undefinedHandlers.remove(id);
+			} 
+			else if (isEmployee == true) {
+				parent.undefinedHandlers.remove(parent.employeeHandlers.get(id));
+				parent.employeeHandlers.remove(id);
+			}
+			else {
+				parent.undefinedHandlers.remove(parent.patientHandlers.get(id));
+				parent.patientHandlers.remove(id);
+			}
+
+			try {
+				socket.close();
+				in.close();
+				out.close();
+			}
+			catch (IOException i) {
+				System.out.println(i);
+				return;
+			}
 		}
 	}
-}
