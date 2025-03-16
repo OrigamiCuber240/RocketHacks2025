@@ -50,6 +50,8 @@ public class ClientHandler implements Runnable {
 			// Reads message from client until "Over" is sent
 			while (!message.equals("over")) {
 
+				message = in.readUTF();
+
 				System.out.println(message);
 				parseInput(message);
 			}
@@ -60,7 +62,7 @@ public class ClientHandler implements Runnable {
 			return;
 		}
 		catch (IOException i) {
-			System.out.println(i);
+			System.out.println(i.getMessage());
 
 			return;
 		}
