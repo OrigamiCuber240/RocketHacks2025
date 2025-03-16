@@ -6,10 +6,21 @@ import java.util.*;
 public class middleLayer {
     private Connection con;
     private Statement stmt;
+    private ResultSet rs;
 
     String url = "jdbc:mysql://localhost:3306/dyschu";
     String username = "root";
     String password = "PiE85397";
+
+    public middleLayer() throws ClassNotFoundException, SQLException{
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            this.con = DriverManager.getConnection(url, username, password);
+            this.stmt = con.createStatement();
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
 
     public void write(String[] val, String table) throws SQLException{
         if (table.equals("employee")){   
