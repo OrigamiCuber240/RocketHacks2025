@@ -33,5 +33,5 @@ VALUE
 (0, 'Doctor'), 
 (1, 'Nurse'),
 (2, 'Janitor'),
-(3, 'Floor Manager')
+(3, 'Floor Manager'),
 (4, 'Emergency Services');
