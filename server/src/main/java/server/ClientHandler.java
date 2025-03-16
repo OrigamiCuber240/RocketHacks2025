@@ -11,10 +11,12 @@ public class ClientHandler implements Runnable {
 
 	public Boolean isEmployee;
 	public int id;
+	public Server parent;
 
-	public ClientHandler(Socket socket, int id) {
+	public ClientHandler(Server parent, Socket socket, int id) {
 		this.socket = socket; //set socket
 		this.id = id;
+		this.parent = parent;
 	}
 
 	public void run() {
@@ -62,10 +64,10 @@ public class ClientHandler implements Runnable {
 		this.isEmployee = isEmployee;
 
 		if (isEmployee == true) { 
-			App.getServer().employeeHandlers.put(id, this.id);
+			parent.employeeHandlers.put(id, this.id);
 		}
 		else {
-			App.getServer().patientHandlers.put(id, this.id);
+			parent.patientHandlers.put(id, this.id);
 		}
 
 		this.id = id;

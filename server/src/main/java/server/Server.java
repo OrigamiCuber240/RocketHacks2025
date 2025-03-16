@@ -60,7 +60,7 @@ public class Server {
 
 		// creates a new thread for client
 		int currentId = getLowestUnassignedIndex();
-		ClientHandler clientSocket = new ClientHandler(socket, currentId);
+		ClientHandler clientSocket = new ClientHandler(this, socket, currentId);
 
 		undefinedHandlers.put(currentId, clientSocket);
 
