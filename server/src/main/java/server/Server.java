@@ -11,9 +11,12 @@ public class Server {
 
 	public HashMap<Integer, Integer> employeeHandlers = new HashMap<Integer, Integer>();
 	public HashMap<Integer, Integer> patientHandlers = new HashMap<Integer, Integer>();
-	public HashMap<Integer, ClientHandler> undefinedHandlers = new HashMap<Integer, ClientHandler>(); // when it isn't yet known whether they are employee or patient
+	public HashMap<Integer, ClientHandler> undefinedHandlers = new HashMap<Integer, ClientHandler>();
+
+	public middleLayer mid;
 
 	public Server(int port) {
+		mid = new middleLayer();
 		try {
 			serverSocket = new ServerSocket(port); //Connect at port
 			serverSocket.setReuseAddress(true); //Allow multiple connections at same port

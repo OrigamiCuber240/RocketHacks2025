@@ -23,22 +23,20 @@ public class middleLayer {
             String sql = "INSERT INTO employee (employeeNum, employeeFirstName, jobTitle, employeeSirName) VALUES (?, ?, ?, ?);";
 
             try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-                pstmt.setInt(1, Integer.parseInt(val[0]));
-                pstmt.setString(2, val[1]);
-                pstmt.setInt(3, Integer.parseInt(val[2]));
-                pstmt.setString(4, val[3]);
+                pstmt.setInt(1, Integer.parseInt(val[0]));  //ID
+                pstmt.setString(2, val[1]);                 //First Name
+                pstmt.setString(3, val[2]);                 //Last Name
+                pstmt.setInt(4, Integer.parseInt(val[3]));  //Job Title
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
         }else if (table.equals("client")){   
-            String sql = "INSERT INTO client (clientNum, clientFirstName, clientSirName) VALUES (?, ?, ?);";
+            String sql = "INSERT INTO client (clientFirstName, clientSirName) VALUES (?, ?);";
 
             try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-                pstmt.setInt(1, Integer.parseInt(val[0]));
-                pstmt.setString(2, val[1]);
-                pstmt.setInt(3, Integer.parseInt(val[2]));
-                pstmt.setString(4, val[3]);
+                pstmt.setString(1, val[0]);                 //First Name
+                pstmt.setString(2, val[1]);                 //Last Name
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());

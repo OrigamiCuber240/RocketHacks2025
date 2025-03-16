@@ -109,7 +109,7 @@ public class ClientHandler implements Runnable {
 				addEvent(args[1]);
 				break;
 			case "initialize":
-				initialize(Boolean.parseBoolean(args[1]), Integer.parseInt(args[2]));
+				initialize(args[1], args[2], Integer.parseInt(args[3]));
 				break;
 			default:
 				System.out.println("command not found" + args[0]);
