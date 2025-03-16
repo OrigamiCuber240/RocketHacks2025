@@ -1,24 +1,37 @@
 CREATE DATABASE DySchu;
 
-CREATE TABLE client(
-	clientNum INT unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE case(
+	caseNum INT unsigned NOT NULL AUTO_INCREMENT,
 	clientFirstName VARCHAR(16) NOT NULL,
 	clientSirName VARCHAR(16) NOT NULL,
-	PRIMARY KEY (clientNum)
+	jobDescription VARCHAR(1024) NOT NULL,
+	employeeTypeNeeded INT unsigned NOT NULL,
+	caseAccepted BINARY(1) NOT NULL,
+	employeeNum INT unsigned
+	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum),
+	PRIMARY KEY (CaseNum)
 );
 
 CREATE TABLE employee(		
 	employeeNum INT unsigned NOT NULL AUTO_INCREMENT,
+	employeePassword VARCHAR(16) NOT NULL,
 	employeeFirstName VARCHAR(16) NOT NULL,
 	employeeName VARCHAR(16) NOT NULL,
-	jobTitle INT unsigned NOT NULL,
+	jobTitleCode INT unsigned NOT NULL,
+	FOREIGN KEY (jobTitleCode) REFERENCES job (jobTitleCode),
 	PRIMARY KEY (employeeNum)
 );
 
-CREATE TABLE clientEmployee(	
-	clientNum INT unsigned NOT NULL,
-	employeeNum INT unsigned NOT NULL,
-	FOREIGN KEY (clientNum) REFERENCES client (clientNum) ON UPDATE CASCADE,
-	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum) ON UPDATE CASCADE,
-	PRIMARY KEY (clientNum, employeeNum)
+CREATE TABLE job(
+	jobTitleCode INT unsigned NOT NULL,
+	jobTitleName VARCHAR(16) NOT NULL,
+	PRIMARY KEY (jobTitleCode)
 );
+
+INSERT INTO job (jobTitleCode, jobTitleName), 
+VALUE 
+(0, 'Doctor'), 
+(1, 'Nurse'),
+(2, 'Janitor'),
+(3, 'Floor Manager')
+(4, 'Emergency Services');
