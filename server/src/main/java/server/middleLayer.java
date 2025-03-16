@@ -1,3 +1,5 @@
+package server;
+
 import java.sql.*;
 import java.util.*;
 
@@ -9,7 +11,7 @@ public class middleLayer {
     String username = "root";
     String password = "PiE85397";
 
-    public middleLayer(String url, String username, String password) throws ClassNotFoundException, SQLException{
+    public middleLayer() throws ClassNotFoundException, SQLException{
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.con = DriverManager.getConnection(url, username, password);
