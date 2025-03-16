@@ -6,8 +6,8 @@ CREATE TABLE case(
 	clientSirName VARCHAR(16) NOT NULL,
 	jobDescription VARCHAR(1024) NOT NULL,
 	employeeTypeNeeded INT unsigned NOT NULL,
-	caseAccepted BINARY(1) NOT NULL,
-	employeeNum INT unsigned
+	caseAccepted INT unsigned NOT NULL,
+	employeeNum INT unsigned NOT NULL,
 	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum),
 	PRIMARY KEY (CaseNum)
 );
