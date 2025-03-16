@@ -58,6 +58,19 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
+	void initialize(Boolean isEmployee, int id) {
+		this.isEmployee = isEmployee;
+
+		if (isEmployee == true) { 
+			App.server.employeeHandlers.put(id, this.id);
+		}
+		else {
+			App.server.patientHandlers.put(id, this.id);
+		}
+
+		this.id = id;
+	}
+
 	void sendEmployee(String workerType, int roomNum) {
 		System.out.println("sending " + workerType + "to room #" + roomNum);
 
@@ -85,13 +98,16 @@ public class ClientHandler implements Runnable {
 
 		switch (args[0]) {
 			case "send-employee":
-				sendEmployee(args[0], Integer.parseInt(args[1]));
+				sendEmployee(args[1], Integer.parseInt(args[2]));
 				break;
 			case "confirm":
-				sendEmployee(args[0], Integer.parseInt(args[1]));
+				sendEmployee(args[1], Integer.parseInt(args[2]));
 				break;
 			case "add-event":
-				addEvent(args[0]);
+				addEvent(args[1]);
+				break;
+			case "initialize":
+				initialize(Boolean.parseBoolean(args[1]), Integer.parseInt(args[2]));
 				break;
 			default:
 				System.out.println("command not found" + args[0]);

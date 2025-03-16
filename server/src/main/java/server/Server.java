@@ -9,8 +9,8 @@ public class Server {
 	//private Socket socket;
 	private ServerSocket serverSocket;
 
-	public HashMap<Integer, ClientHandler> employeeHandlers = new HashMap<Integer, ClientHandler>();
-	public HashMap<Integer, ClientHandler> patientHandlers = new HashMap<Integer, ClientHandler>();
+	public HashMap<Integer, Integer> employeeHandlers = new HashMap<Integer, Integer>();
+	public HashMap<Integer, Integer> patientHandlers = new HashMap<Integer, Integer>();
 	public HashMap<Integer, ClientHandler> undefinedHandlers = new HashMap<Integer, ClientHandler>(); // when it isn't yet known whether they are employee or patient
 
 	public Server(int port) {
