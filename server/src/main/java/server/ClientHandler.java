@@ -122,9 +122,14 @@ public class ClientHandler implements Runnable {
 	}
 
 	void closeConnection() {
+		if (isEmployee == null) {
+			parent.undefinedHandlers.remove(id);
+		}
+
 		try {
 			socket.close();
 			in.close();
+			out.close();
 		}
 		catch (IOException i) {
 			System.out.println(i);
