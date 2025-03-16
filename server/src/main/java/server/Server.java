@@ -3,6 +3,7 @@ package server;
 import java.util.HashMap;
 import java.util.Set;
 import java.net.*;
+import java.sql.SQLException;
 import java.io.*;
 
 public class Server {
@@ -16,7 +17,18 @@ public class Server {
 	public middleLayer mid;
 
 	public Server(int port) {
-		mid = new middleLayer();
+
+		// initialize middle layer
+		try {
+			mid = new middleLayer();
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		try {
 			serverSocket = new ServerSocket(port); //Connect at port
 			serverSocket.setReuseAddress(true); //Allow multiple connections at same port

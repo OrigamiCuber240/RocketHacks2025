@@ -1,5 +1,6 @@
 package server;
 
+import java.util.Set;
 import java.io.*;
 import java.net.*;
 
@@ -60,34 +61,40 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
-	void initialize(Boolean isEmployee, int id) {
-		this.isEmployee = isEmployee;
-
-		if (isEmployee == true) { 
-			parent.employeeHandlers.put(id, this.id);
+	void initialize(String first, String sir, int role) {
+		Set<Integer> keyset = parent.employeeHandlers.keySet();
+		Integer[] keys = keyset.toArray(new Integer[keyset.size()]);
+		for (int i = 0; i < keys.length; ++i) {
 		}
-		else {
-			parent.patientHandlers.put(id, this.id);
+	}
+
+	void writeOut(String output) {
+		try {
+			out.writeUTF(output);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	Boolean send_request(String first, String sir) {
+		writeOut("request|" + first + "|" + sir);
+
+		Boolean accepted;
+
+		try {
+			accepted = in.readBoolean();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			accepted = false;
 		}
 
-		this.id = id;
+		return accepted;
 	}
 
-	void sendEmployee(String workerType, int roomNum) {
-		System.out.println("sending " + workerType + "to room #" + roomNum);
-
-		// Send a message to employee client to show popup
-		// log that for use on confirmation
-		//App.server
-
-	}
-
-	void confirm(Boolean b) {
-		System.out.println("Confirms " + b);
-	}
-
-	void addEvent(String name) {
-		System.out.println("event " + name + "added");
+	void startLogin(int id) {
+		
 	}
 
 	void parseInput(String message) {
@@ -99,14 +106,11 @@ public class ClientHandler implements Runnable {
 		}
 
 		switch (args[0]) {
-			case "send-employee":
-				sendEmployee(args[1], Integer.parseInt(args[2]));
-				break;
-			case "confirm":
-				sendEmployee(args[1], Integer.parseInt(args[2]));
-				break;
-			case "add-event":
-				addEvent(args[1]);
+			//case "accept":
+			//	accept(Boolean.parseBoolean(args[1]));
+			//	break;
+			case "login":
+				startLogin(Integer.parseInt(args[1]));
 				break;
 			case "initialize":
 				initialize(args[1], args[2], Integer.parseInt(args[3]));
