@@ -1,12 +1,36 @@
-### IDEAS
+DySchu - Dynamic Scheduling Agent
 
-Budgeting/Investment using data set for proected growth
-**Dynamic Scheduling for medical labs/clinics/hospitals
+### Authors ###
+* Janelle Schafer 
+* Jude Lingan
+* Richard Smith
 
-### GOALS
+### GOALS|Description ###
+* Create a program that take client data and requests and assigns the most qualified and availible operator to meet the need
+* Reads and Writes data from/onto a database hosted on a searver for multiple data flows
+* Assigns a specific operator to a client which best suits their need
+* Sorts requests by urgency
+* Allows employees to accept of decline requests
+* Send push notifications in order of importance
 
-dyschedule
-dynamic scheduling software for hospitals
-database holding client and worker info
-hosted on aws server
-mobile apps for clients and workers
+### Target Audience ###
+* Hospitals
+* Clinics
+* On-call work enviromnets
+
+### Expansion Potential ###
+* Expandable Database 
+* Multitude of applications
+
+
+### Languages and Software Used ###
+* Java
+* SQL
+* AWS ec2
+* MySQL
+* Maven
+* GitHub
+* Stack Overflow
+* Perplexity.AI
+
+
