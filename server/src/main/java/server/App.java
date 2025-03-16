@@ -1,9 +1,13 @@
 package server;
 
 public class App {
-	public static Server server;
+	private static Server server;
 
 	public static void main(String[] args) {
 		server = new Server(5000);
+	}
+
+	static Server getServer() {
+		return server;
 	}
 }

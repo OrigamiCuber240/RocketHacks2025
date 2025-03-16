@@ -62,10 +62,10 @@ public class ClientHandler implements Runnable {
 		this.isEmployee = isEmployee;
 
 		if (isEmployee == true) { 
-			App.server.employeeHandlers.put(id, this.id);
+			App.getServer().employeeHandlers.put(id, this.id);
 		}
 		else {
-			App.server.patientHandlers.put(id, this.id);
+			App.getServer().patientHandlers.put(id, this.id);
 		}
 
 		this.id = id;
