@@ -1,6 +1,6 @@
 CREATE DATABASE DySchu;
 
-CREATE TABLE case(
+CREATE TABLE clientCase(
 	caseNum INT unsigned NOT NULL AUTO_INCREMENT,
 	clientFirstName VARCHAR(16) NOT NULL,
 	clientSirName VARCHAR(16) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE case(
 	caseAccepted INT unsigned NOT NULL,
 	employeeNum INT unsigned NOT NULL,
 	FOREIGN KEY (employeeNum) REFERENCES employee (employeeNum),
-	PRIMARY KEY (CaseNum)
+	PRIMARY KEY (caseNum)
 );
 
 CREATE TABLE employee(		
