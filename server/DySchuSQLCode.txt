@@ -28,10 +28,10 @@ CREATE TABLE job(
 	PRIMARY KEY (jobTitleCode)
 );
 
-INSERT INTO job (jobTitleCode, jobTitleName), 
-VALUE 
-(0, 'Doctor'), 
-(1, 'Nurse'),
-(2, 'Janitor'),
-(3, 'Floor Manager'),
-(4, 'Emergency Services');
+INSERT INTO job (jobTitleCode, jobTitleName)
+VALUES
+	(0, "Doctor"),
+	(1, "Nurse"),
+	(2, "Janitor"),
+	(3, "Floor Manager"),
+	(4, "Emergency Services");
